@@ -2,7 +2,7 @@ certifi==2022.12.7
 chardet==3.0.4
 Click==7.0
 idna==2.8
-itsdangerous==1.1.0
+itsdangerous==2.0.0
 Jinja2==3.0
 MarkupSafe==2.1.1
 python-dateutil==2.8.2
