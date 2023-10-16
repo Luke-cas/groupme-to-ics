@@ -53,12 +53,6 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
         app.logger.error(f"An unexpected error occurred: {e}")
         return False
 
-    # If no exception occurred, you can continue processing the response
-    # For example:
-    # current_app.groupme_calendar_json_cache = response.json()
-    # return True
-
-
     current_app.groupme_calendar_json_cache = response.json()
 
     response = requests.get(url_group_info, headers=headers)
@@ -68,6 +62,7 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
 
     current_app.groupme_load_successfully = True
     return True
+
 
 
 def groupme_json_to_ics(groupme_json, static_name=None):
