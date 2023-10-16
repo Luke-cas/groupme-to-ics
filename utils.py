@@ -40,7 +40,7 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
     url_group_info = 'https://api.groupme.com/v3/groups/{groupme_group_id}'.format(groupme_group_id=groupme_group_id)
     url_calendar = 'https://api.groupme.com/v3/conversations/{groupme_group_id}/events/list'.format(groupme_group_id=groupme_group_id)
     headers = {'X-Access-Token': groupme_api_key}
-
+try:
     response = requests.get(url_calendar, headers=headers)
     response = requests.get(url_calendar, headers=headers)
     response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
