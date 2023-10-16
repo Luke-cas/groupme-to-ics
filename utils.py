@@ -40,18 +40,24 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
     url_group_info = 'https://api.groupme.com/v3/groups/{groupme_group_id}'.format(groupme_group_id=groupme_group_id)
     url_calendar = 'https://api.groupme.com/v3/conversations/{groupme_group_id}/events/list'.format(groupme_group_id=groupme_group_id)
     headers = {'X-Access-Token': groupme_api_key}
-try:
-    response = requests.get(url_calendar, headers=headers)
-    response = requests.get(url_calendar, headers=headers)
-    response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
-except requests.HTTPError as e:
-    current_app.groupme_load_successfully = False
-    current_app.groupme_calendar_json_cache = {}
-    app.logger.error(f"HTTP Error {response.status_code}: {e}")
-    return False
-except Exception as e:
-    app.logger.error(f"An unexpected error occurred: {e}")
-    return False
+
+    try:
+        response = requests.get(url_calendar, headers=headers)
+        response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+    except requests.HTTPError as e:
+        current_app.groupme_load_successfully = False
+        current_app.groupme_calendar_json_cache = {}
+        app.logger.error(f"HTTP Error {response.status_code}: {e}")
+        return False
+    except Exception as e:
+        app.logger.error(f"An unexpected error occurred: {e}")
+        return False
+
+    # If no exception occurred, you can continue processing the response
+    # For example:
+    # current_app.groupme_calendar_json_cache = response.json()
+    # return True
+
 
     current_app.groupme_calendar_json_cache = response.json()
 
