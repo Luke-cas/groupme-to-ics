@@ -42,11 +42,16 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
     headers = {'X-Access-Token': groupme_api_key}
 
     response = requests.get(url_calendar, headers=headers)
-    if response.status_code != 200:
-        current_app.groupme_load_successfully = False
-        current_app.groupme_calendar_json_cache = {}
-        app.logger.error('{}: {}'.format(response.status_code, response.text))
-        return False
+    response = requests.get(url_calendar, headers=headers)
+    response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+except requests.HTTPError as e:
+    current_app.groupme_load_successfully = False
+    current_app.groupme_calendar_json_cache = {}
+    app.logger.error(f"HTTP Error {response.status_code}: {e}")
+    return False
+except Exception as e:
+    app.logger.error(f"An unexpected error occurred: {e}")
+    return False
 
     current_app.groupme_calendar_json_cache = response.json()
 
