@@ -18,6 +18,9 @@ def return_ics_Response(response_body):
 def build_ics_urls(ics_url):
     google_calendar_url_base = 'http://www.google.com/calendar/render?cid='
 
+    print(f"ics_url type: {type(ics_url)}, value: {ics_url}")  # Add this line for debugging
+
+    
     # Add a check to ensure ics_url is a string
     if not isinstance(ics_url, str):
         print("Error: ics_url is not a string")  # Replace with proper error handling
