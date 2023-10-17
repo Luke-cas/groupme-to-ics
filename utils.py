@@ -18,6 +18,23 @@ def return_ics_Response(response_body):
 def build_ics_urls(ics_url):
     google_calendar_url_base = 'http://www.google.com/calendar/render?cid='
 
+    # Add a check to ensure ics_url is a string
+    if not isinstance(ics_url, str):
+        print("Error: ics_url is not a string")  # Replace with proper error handling
+        return None  # Or handle error as appropriate
+
+    # Add a log to print the type and value of ics_url
+    print(type(ics_url), ics_url)  # Replace with proper logging
+
+    # Parse the URL into [scheme, netloc, path, params, query, fragment]
+    parsed_ics_url = list(urllib.parse.urlparse(ics_url))
+    if parsed_ics_url[0] != 'https':
+        parsed_ics_url[0] = 'http'
+    ics_url_http = urllib.parse.urlunparse(parsed_ics_url)
+
+    # ... (rest of the code remains the same)
+
+
     # Parse the URL into [scheme, netloc, path, params, query, fragment]
     parsed_ics_url = list(urllib.parse.urlparse(ics_url))
     if parsed_ics_url[0] != 'https':
