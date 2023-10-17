@@ -51,7 +51,7 @@ def build_ics_urls(ics_url):
     parsed_google_url[4] = dict(urllib.parse.parse_qsl(parsed_google_url[4]))
     parsed_google_url[4]['cid'] = ics_url_webcal
     parsed_google_url[4] = urllib.parse.urlencode(parsed_google_url[4])
-    ics_url_google = urllib.parse.urlparse(parsed_google_url)
+    ics_url_google = urllib.parse.urlparse(urllib.parse.urlunparse(parsed_google_url))  # Fixed this line
 
     return ics_url_http, ics_url_webcal, ics_url_google
 
