@@ -61,6 +61,7 @@ def load_groupme_json(app, groupme_api_key, groupme_group_id):
     return True
 
 def groupme_json_to_ics(groupme_json, static_name=None):
+    Try:
     cal = Calendar()
     cal['prodid'] = '-//Andrew Mussey//GroupMe-to-ICS 0.1//EN'
     cal['version'] = '2.0'
@@ -69,9 +70,9 @@ def groupme_json_to_ics(groupme_json, static_name=None):
     cal['x-wr-calname'] = 'GroupMe: {}'.format(current_app.groupme_calendar_name)
     cal['x-wr-timezone'] = current_app.calendar_timezone
 
-    for json_blob in groupme_json['response']['events']:
-        if 'deleted_at' not in json_blob:
-            event = Event()
+    for json_blob in groupme_json.get('response', {}).get('events', []):
+            if 'deleted_at' not in json_blob:
+                event = Event()
             event['uid'] = json_blob['event_id']
             event.add('dtstart', dateutil.parser.parse(json_blob['start_at']))
             if json_blob.get('end_at'):
@@ -86,8 +87,8 @@ def groupme_json_to_ics(groupme_json, static_name=None):
                 event['description'] += 'Location:\n'
 
                 if location.get('name') and location.get('address'):
-                    event['location'] = "{}, {}".format(location.get('name'), location.get('address').strip().replace("\n", ", "))
-                    event['description'] += location.get('name')
+                    event['location'] = f"{location.get('name')}, {location.get('address').strip().replace('\n', ', ')}"
+                    event['description'] += f"{location.get('name')}\n{location.get('address')}"
                     event['description'] += '\n'
                     event['description'] += location.get('address')
                 elif location.get('name'):
@@ -110,7 +111,9 @@ def groupme_json_to_ics(groupme_json, static_name=None):
             cal.add_component(event)
 
     return cal.to_ical()
-
+except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
 
 def groupme_ics_error(error_text, static_name=None):
     cal = Calendar()
